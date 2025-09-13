@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 3: Convert Second Fraction - Convert Unlike to Like Fractions</title>
+    
+    <!-- Mandatory Arial font family -->
+    <style>
+        /* Mandatory CSS Variables - Exact hex values */
+        :root {
+            /* Correctness Colors */
+            --color-correct-base: #219150;
+            --color-correct-light: #58D98B;
+            --color-correct-dark: #0d803d;
+
+            /* Wrongness Colors */
+            --color-wrong-base: #FF6F61;
+            --color-wrong-light: #FF8F83;
+            --color-wrong-dark: #D4574C;
+
+            /* Buttons/Sliders - Gold */
+            --color-gold-base: #F1C40F;
+            --color-gold-light: #F5D54D;
+            --color-gold-dark: #BFA70B;
+
+            /* Objects & Highlights */
+            --color-orange-base: #FF7F3F;
+            --color-blue-base: #3498DB;
+            --color-green-base: #27AE60;
+            --color-pink-base: #FF4D6D;
+            --color-purple-base: #9B59B6;
+            --color-aqua-base: #1ABC9C;
+            --color-rose-base: #E84393;
+            --color-yellow-base: #FF9F1A;
+            --color-sand-base: #D2B48C;
+            --color-white-base: #FFFFFF;
+        }
+
+        /* Mandatory responsive design - no scrollbars */
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #000000; /* Black background */
+        }
+
+        #root {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Main layout - 3 section design */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            background-color: #000000; /* Black background */
+            gap: 9px; /* Increased bezel gap between top and bottom sections */
+            padding: 9px; /* Increased bezel gap around entire screen */
+            box-sizing: border-box;
+        }
+
+        /* Top section with sidebar and main content */
+        .top-section {
+            display: flex;
+            flex: 1;
+            height: 85%;
+            gap: 9px; /* Increased bezel gap between left and right panes */
+        }
+
+        /* Left sidebar for step navigation - 30% width */
+        .step-sidebar {
+            width: 30%;
+            background-color: #8B4513; /* Brown background */
+            border: 3px solid #FFD700; /* Frame-like golden border */
+            border-radius: 12px; /* Rounded corners */
+            box-shadow: 
+                0 0 0 1px rgba(255, 215, 0, 0.3), /* Inner glow */
+                0 4px 12px rgba(255, 215, 0, 0.2), /* Outer shadow */
+                inset 0 1px 0 rgba(255, 255, 255, 0.1); /* Inner highlight */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center buttons vertically */
+            padding: 20px; /* Reduced padding to minimize negative space */
+            box-sizing: border-box;
+            position: relative;
+            overflow: visible;
+            z-index: 1;
+        }
+
+        /* Step buttons with proportional sizing - 30% scale relative to container */
+        .step-button {
+            width: 30vw; /* 30% of viewport width for proportional scaling */
+            height: calc(30vw * 0.551); /* Maintains aspect ratio (140/254 = 0.551) */
+            max-width: 254px; /* Original max width */
+            max-height: 140px; /* Original max height */
+            min-width: 150px; /* Minimum usable width */
+            min-height: 83px; /* Minimum height maintaining ratio */
+            margin-bottom: 20px; /* Reduced margin to optimize spacing */
+            border: none;
+            border-radius: 20px;
+            font-size: clamp(20px, 2.5vw, 40px); /* Responsive font size */
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-right: 15%;
+            box-sizing: border-box;
+            box-shadow: 
+                0 2px 8px rgba(0, 0, 0, 0.2), /* Subtle shadow */
+                inset 0 1px 0 rgba(255, 255, 255, 0.2); /* Inner highlight */
+        }
+
+        .step-button.step-1 {
+            background-color: var(--color-blue-base); /* Step 1 - blue (completed) */
+            color: #000000; /* Black text */
+        }
+
+        .step-button.step-2 {
+            background-color: var(--color-green-base); /* Step 2 - green (completed) */
+            color: #000000; /* Black text */
+        }
+
+        .step-button.step-3 {
+            background-color: var(--color-orange-base); /* Step 3 - orange (current) */
+            color: #000000; /* Black text */
+            /* Mandatory button animations */
+            animation: pulse 2s infinite;
+            box-shadow: 
+                0 2px 8px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 0 10px rgba(255, 127, 63, 0.5);
+        }
+
+        /* Mandatory button tap animation */
+        .step-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Hand pointer: anchored to step buttons */
+        .hand-pointer {
+            position: absolute; /* Inside the button so it points to the label */
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            pointer-events: none;
+            animation: nudge 1.5s infinite;
+            z-index: 10;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+        }
+
+        @keyframes nudge {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(5px, -5px); }
+            50% { transform: translate(0, 0); }
+            75% { transform: translate(-5px, 5px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        /* Mandatory pulsating glow effect */
+        @keyframes pulse {
+            0% { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 10px rgba(241, 196, 15, 0.5); }
+            50% { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 20px rgba(241, 196, 15, 0.8); }
+            100% { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 10px rgba(241, 196, 15, 0.5); }
+        }
+
+        /* Text in interactive elements - mandatory styling */
+        .step-button span {
+            pointer-events: none;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Main content area - 70% width, black background */
+        .main-content {
+            width: 70%;
+            background-color: #000000; /* Black background */
+            border: 3px solid #FFD700; /* Frame-like golden border */
+            border-radius: 12px; /* Rounded corners */
+            box-shadow: 
+                0 0 0 1px rgba(255, 215, 0, 0.3), /* Inner glow */
+                0 4px 12px rgba(255, 215, 0, 0.2), /* Outer shadow */
+                inset 0 1px 0 rgba(255, 255, 255, 0.1); /* Inner highlight */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 30px; /* Increased padding for larger elements */
+            box-sizing: border-box;
+            position: relative;
+            cursor: pointer; /* Allow tapping anywhere */
+        }
+
+        .content-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        /* TOP SECTION: Original fractions at top - 36px size */
+        .fraction-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+            margin-bottom: 30px;
+        }
+
+        .fraction {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .fraction-numerator {
+            font-size: 54px; /* Scaled up from 36px */
+            font-weight: bold;
+            line-height: 1;
+            margin-bottom: 3px;
+        }
+
+        .fraction-line {
+            width: 90px;
+            height: 6px;
+            background-color: #FFFFFF; /* White fraction line */
+            margin: 5px 0;
+        }
+
+        .fraction-denominator {
+            font-size: 54px; /* Scaled up from 36px */
+            font-weight: bold;
+            line-height: 1;
+            margin-top: 3px;
+        }
+
+        /* Color coding for fractions - exact colors */
+        .fraction-6 {
+            color: #219150; /* Green for 2/6 */
+        }
+
+        .fraction-4 {
+            color: #FF7F3F; /* Orange for 3/4 */
+        }
+
+        /* Highlighted fraction styling - subtle orange glow for 3/4 */
+        .fraction-highlighted {
+            box-shadow: 0 0 15px rgba(255, 127, 63, 0.7); /* Orange glow */
+            border-radius: 10px;
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
+
+        /* Comma separator */
+        .fraction-comma {
+            font-size: 54px;
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+
+        /* Arrow pointing to result */
+        .arrow {
+            font-size: 54px;
+            color: #FFFFFF;
+            margin: 0 30px;
+        }
+
+        /* Result fraction - blue */
+        .result-fraction {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .result-numerator {
+            font-size: 54px;
+            font-weight: bold;
+            line-height: 1;
+            margin-bottom: 3px;
+            color: var(--color-blue-base); /* Blue for result */
+        }
+
+        .result-denominator {
+            font-size: 54px;
+            font-weight: bold;
+            line-height: 1;
+            margin-top: 3px;
+            color: #219150; /* Green for result */
+        }
+
+        .result-line {
+            width: 90px;
+            height: 6px;
+            background-color: #FFFFFF; /* White line for result */
+            margin: 5px 0;
+        }
+
+        /* MIDDLE SECTION: Instruction text - 36px, centered */
+        .instruction-text {
+            font-size: 36px; /* Scaled up from 24px */
+            color: #FFFFFF; /* White text */
+            text-align: center;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 60px;
+        }
+
+        /* Highlighted text in instruction - orange for "second fraction" */
+        .highlighted-text {
+            color: #FF7F3F; /* Orange for "second fraction" */
+            font-weight: bold;
+        }
+
+        /* BOTTOM SECTION: Mathematical equation - 48px numbers, HORIZONTAL LAYOUT */
+        .equation-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px 0;
+            gap: 15px;
+        }
+
+        /* Fraction component */
+        .equation-fraction {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .equation-numerator {
+            font-size: 72px;
+            font-weight: bold;
+            line-height: 1;
+            margin-bottom: 3px;
+        }
+
+        .equation-denominator {
+            font-size: 72px;
+            font-weight: bold;
+            line-height: 1;
+            margin-top: 3px;
+        }
+
+        .equation-line-bar {
+            width: 120px;
+            height: 6px;
+            background-color: #FFFFFF;
+            margin: 5px 0;
+        }
+
+        /* Equals sign - positioned to align with fraction lines */
+        .equals-sign {
+            font-size: 72px;
+            color: #FFFFFF;
+            font-weight: bold;
+            align-self: center;
+        }
+
+        /* Color coding */
+        .equation-orange {
+            color: #FF7F3F;
+        }
+
+        .equation-blue {
+            color: #3498DB;
+        }
+
+        .equation-green {
+            color: #219150;
+        }
+
+        .equation-white {
+            color: #FFFFFF;
+        }
+
+        /* Animation classes */
+        .appear-animation {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .appear-animation.visible {
+            opacity: 1;
+        }
+
+        /* Bottom instruction bar - 15% height, glass effect */
+        .bottom-bar {
+            height: 15%;
+            background-color: rgba(44, 44, 44, 0.9); /* Glass effect with 90% opacity */
+            border: 3px solid #FFD700; /* Frame-like golden border */
+            border-radius: 12px; /* Rounded corners */
+            box-shadow: 
+                0 0 0 1px rgba(255, 215, 0, 0.3), /* Inner glow */
+                0 4px 12px rgba(255, 215, 0, 0.2), /* Outer shadow */
+                inset 0 1px 0 rgba(255, 255, 255, 0.1); /* Inner highlight */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px); /* Glass blur effect */
+        }
+
+        .bottom-instruction-text {
+            font-size: clamp(16px, 2.5vw, 20px);
+            color: #FFFFFF; /* White text */
+            text-align: center;
+            font-weight: 600;
+            line-height: 1.3;
+            max-width: 90%;
+        }
+
+        /* Smooth transitions */
+        .scene-transition {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Final summary display - centered layout */
+        .final-summary-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        .final-summary-display .fraction-display {
+            margin: 0;
+        }
+
+        /* Larger fractions for final summary screen */
+        .final-summary-display .fraction-numerator,
+        .final-summary-display .fraction-denominator {
+            font-size: 108px; /* Scaled up from 72px */
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .final-summary-display .fraction-line {
+            width: 150px; /* Wider line for larger fractions */
+            height: 9px; /* Thicker line */
+            background-color: #FFFFFF;
+            margin: 9px 0;
+        }
+
+        .final-summary-display .fraction-comma {
+            font-size: 108px;
+            color: #FFFFFF;
+            font-weight: bold;
+            margin: 0 45px;
+        }
+
+        .final-summary-display .arrow {
+            font-size: 108px;
+            color: #FFFFFF;
+            margin: 0 60px;
+        }
+
+        .final-summary-display .result-numerator,
+        .final-summary-display .result-denominator {
+            font-size: 108px;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .final-summary-display .result-line {
+            width: 150px;
+            height: 9px;
+            margin: 9px 0;
+        }
+
+        /* Fraction labels */
+        .fraction-label {
+            font-size: 48px;
+            color: #FFFFFF;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .fraction-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Responsive adjustments for different screen sizes */
+        
+        /* Large screens (2560px and above) - 4K optimization */
+        @media (min-width: 2560px) {
+            .step-button {
+                height: 120px;
+                font-size: 36px;
+                margin-bottom: 30px;
+            }
+            
+            .fraction-numerator,
+            .fraction-denominator {
+                font-size: 72px;
+            }
+            
+            .fraction-comma {
+                font-size: 48px;
+            }
+            
+            .instruction-text {
+                font-size: 40px;
+            }
+            
+            .equation-numerator,
+            .equation-denominator {
+                font-size: 72px;
+            }
+            
+            .equals-sign,
+            .multiplication-symbol {
+                font-size: 60px;
+            }
+            
+            .multiplier {
+                font-size: 48px;
+                padding: 15px 30px;
+                min-width: 120px;
+            }
+            
+            .final-summary-display {
+                font-size: 30px;
+            }
+            
+            .fraction-label {
+                font-size: 24px;
+            }
+            
+            .app-container {
+                padding: 15px;
+                gap: 15px;
+            }
+            
+            .step-sidebar,
+            .main-content {
+                padding: 45px;
+            }
+        }
+        
+        /* Medium-large screens (1920px to 2559px) - Full HD optimization */
+        @media (min-width: 1920px) and (max-width: 2559px) {
+            .step-button {
+                height: 105px;
+                font-size: 30px;
+            }
+            
+            .fraction-numerator,
+            .fraction-denominator {
+                font-size: 60px;
+            }
+            
+            .instruction-text {
+                font-size: 33px;
+            }
+            
+            .equation-numerator,
+            .equation-denominator {
+                font-size: 60px;
+            }
+            
+            .equals-sign,
+            .multiplication-symbol {
+                font-size: 50px;
+            }
+            
+            .final-summary-display {
+                font-size: 27px;
+            }
+        }
+        
+        /* Standard desktop (1280px to 1919px) - HD optimization */
+        @media (min-width: 1280px) and (max-width: 1919px) {
+            .step-button {
+                height: 90px;
+                font-size: 27px;
+            }
+            
+            .fraction-numerator,
+            .fraction-denominator {
+                font-size: 54px;
+            }
+            
+            .instruction-text {
+                font-size: 30px;
+            }
+            
+            .equation-numerator,
+            .equation-denominator {
+                font-size: 54px;
+            }
+            
+            .equals-sign,
+            .multiplication-symbol {
+                font-size: 45px;
+            }
+            
+            .final-summary-display {
+                font-size: 24px;
+            }
+        }
+        
+        /* Small desktop/tablet (961px to 1279px) */
+        @media (min-width: 961px) and (max-width: 1279px) {
+            .step-button {
+                height: 75px;
+                font-size: 24px;
+            }
+            
+            .fraction-numerator,
+            .fraction-denominator {
+                font-size: 36px;
+            }
+            
+            .instruction-text {
+                font-size: 22px;
+                line-height: 1.3;
+            }
+            
+            .equation-numerator,
+            .equation-denominator {
+                font-size: 36px;
+            }
+            
+            .equals-sign,
+            .multiplication-symbol {
+                font-size: 32px;
+            }
+            
+            .final-summary-display {
+                font-size: 21px;
+            }
+            
+            .app-container {
+                padding: 8px;
+                gap: 8px;
+            }
+        }
+        
+        /* Specific resolution fixes for proper div positioning */
+        @media (width: 1920px) and (height: 1080px) {
+            .main-content {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+            }
+            
+            .fraction-display {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 45px;
+                margin: 20px auto;
+                width: 100%;
+                max-width: 1200px;
+                position: relative;
+            }
+            
+            .content-wrapper {
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100%;
+                width: 100%;
+            }
+        }
+        
+        @media (width: 1280px) and (height: 720px) {
+            .main-content {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+            }
+            
+            .fraction-display {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 35px;
+                margin: 15px auto;
+                width: 100%;
+                max-width: 900px;
+                position: relative;
+            }
+            
+            .content-wrapper {
+                padding: 15px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100%;
+                width: 100%;
+            }
+            
+            .fraction-numerator,
+            .fraction-denominator {
+                font-size: 32px;
+            }
+            
+            .instruction-text {
+                font-size: 20px;
+                line-height: 1.3;
+            }
+            
+            .equation-numerator,
+            .equation-denominator {
+                font-size: 32px;
+            }
+        }
+        
+        @media (width: 960px) and (height: 540px) {
+            .main-content {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+            }
+            
+            .fraction-display {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 25px;
+                margin: 10px auto;
+                width: 100%;
+                max-width: 700px;
+                position: relative;
+            }
+            
+            .content-wrapper {
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100%;
+                width: 100%;
+            }
+            
+            .fraction-numerator,
+            .fraction-denominator {
+                font-size: 26px;
+            }
+            
+            .instruction-text {
+                font-size: 16px;
+                line-height: 1.4;
+            }
+            
+            .equation-numerator,
+            .equation-denominator {
+                font-size: 26px;
+            }
+        }
+
+        /* Mobile and small screens (960px and below) */
+        @media (max-width: 960px) {
+            .app-container {
+                padding: 4px; /* Reduced padding for smaller screens */
+            }
+            
+            .top-section {
+                /* Keep horizontal layout - sidebar stays on left */
+                flex-direction: row;
+                height: 85%;
+                gap: 4px; /* Reduced gap for smaller screens */
+            }
+            
+            .step-sidebar {
+                width: 30%; /* Consistent 30% width on mobile */
+                height: auto;
+                flex-direction: column; /* Keep vertical button layout */
+                justify-content: flex-start;
+                padding: 10px;
+                border-right: 3px solid #FFD700;
+                border-bottom: none;
+                border-radius: 12px; /* All corners rounded */
+            }
+            
+            .step-button {
+                width: calc(100% - 20px); /* Responsive width within 30% sidebar */
+                height: calc((100vw - 20px) * 0.551 * 0.3); /* Proportional height maintaining aspect ratio */
+                max-height: 100px; /* Mobile-optimized max height */
+                min-height: 60px; /* Minimum usable height */
+                margin: 8px 0; /* Vertical margin for stacked layout */
+                font-size: clamp(18px, 4vw, 24px); /* Responsive font for mobile */
+                padding-right: 10%; /* Adjusted padding for mobile */
+            }
+            
+            .fraction-display {
+                gap: 25px;
+            }
+            
+            .fraction-numerator,
+            .fraction-denominator,
+            .fraction-comma {
+                font-size: 24px;
+            }
+            
+            .fraction-line {
+                width: 45px;
+                height: 3px;
+            }
+
+            .instruction-text {
+                font-size: 18px;
+                line-height: 1.4;
+            }
+
+            .equation-numerator,
+            .equation-denominator,
+            .equals-sign,
+            .multiplication-symbol,
+            .multiplier {
+                font-size: 28px;
+            }
+
+            .equation-line-bar {
+                width: 90px;
+                height: 6px;
+            }
+            
+            /* Bottom bar overflow prevention */
+            .bottom-bar {
+                height: 15%;
+                min-height: 60px; /* Ensure minimum height */
+                padding: 8px 12px; /* Reduced padding */
+                overflow: hidden; /* Prevent content overflow */
+            }
+            
+            .instruction-text {
+                font-size: clamp(16px, 3vw, 22px); /* Smaller responsive font */
+                line-height: 1.2; /* Tighter line spacing */
+                max-width: 100%; /* Full width utilization */
+                word-wrap: break-word; /* Break long words */
+                overflow-wrap: break-word; /* Modern word breaking */
+                hyphens: auto; /* Enable hyphenation */
+                text-overflow: ellipsis; /* Handle text overflow gracefully */
+                display: -webkit-box;
+                -webkit-line-clamp: 2; /* Limit to 2 lines */
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- Pure JavaScript implementation for offline functionality -->
+
+    <!-- Translation data embedded for offline functionality -->
+    <script>
+        // Translation data for Convert Unlike to Like Fractions applet
+        const appData = {
+            en: {
+                "standard-ui": {
+                    buttons: {
+                        next: "Next",
+                        back: "Back", 
+                        continue: "Continue",
+                        start: "Start"
+                    },
+                    labels: {
+                        step: "Step"
+                    },
+                    navigation: {
+                        step_1: "Step 1",
+                        step_2: "Step 2",
+                        step_3: "Step 3"
+                    }
+                },
+                "content-ui": {
+                    instructions: {
+                        main_instruction: "Tap anywhere to continue through the fraction conversion.",
+                        find_lcm: "Find the LCM of two denominators.",
+                        convert_first: "Find the equivalent fraction of the first fraction using the LCM as the denominator.",
+                        convert_second: "Find the equivalent fraction of the second fraction using the LCM as the denominator."
+                    },
+                    math_content: {
+                        lcm_calculation: "LCM of 6 and 4 = 2 × 3 × 2 = 12",
+                        unlike_fractions: "Unlike Fractions",
+                        like_fractions: "Like Fractions",
+                        example_fractions: "2/6, 3/4"
+                    },
+                    feedback: {
+                        step_complete: "Step completed!",
+                        tap_to_continue: "Tap to continue",
+                        step_locked: "Complete previous step first"
+                    }
+                }
+            }
+        };
+    </script>
+
+    <script>
+        // Pure JavaScript implementation - MANDATORY offline functionality
+        
+        // Audio feedback function
+        const playInteractionSound = () => {
+            try {
+                const audio = new Audio('./assets/audio/click.mp3');
+                audio.volume = 0.5; // Set volume to 50% to avoid being too loud
+                audio.play().catch(error => {
+                    console.log('Audio playback failed:', error);
+                });
+            } catch (error) {
+                console.log('Audio initialization failed:', error);
+            }
+        };
+
+        // Application state
+        let currentScreen = 1;
+        let step3Completed = false;
+        const translations = appData.en;
+
+        // Event handlers
+        const handleScreenTap = () => {
+            playInteractionSound();
+            if (currentScreen < 7) {
+                currentScreen++;
+            } else if (currentScreen === 7) {
+                step3Completed = true;
+                currentScreen = 8;
+            } else if (currentScreen === 8) {
+                currentScreen = 9;
+            }
+            renderApp();
+        };
+
+        const handleStepClick = (stepNumber) => {
+            if (stepNumber === 1) {
+                window.location.href = 'step1.html';
+            } else if (stepNumber === 2) {
+                window.location.href = 'step2.html';
+            }
+        };
+
+        // Render the complete application
+        const renderApp = () => {
+            const root = document.getElementById('root');
+            
+            // Generate main content based on current screen
+            let mainContent = '';
+            
+            if (currentScreen === 8 || currentScreen === 9) {
+                // Final summary screens
+                mainContent = `
+                    <div class="final-summary-display">
+                        <div class="fraction-display">
+                            <div class="fraction fraction-6">
+                                <span class="fraction-numerator">2</span>
+                                <span class="fraction-line"></span>
+                                <span class="fraction-denominator">6</span>
+                            </div>
+                            <span class="fraction-comma">,</span>
+                            <div class="fraction fraction-4">
+                                <span class="fraction-numerator">3</span>
+                                <span class="fraction-line"></span>
+                                <span class="fraction-denominator">4</span>
+                            </div>
+                            
+                            <span class="arrow">→</span>
+                            
+                            <div class="result-fraction">
+                                <span class="result-numerator" style="color: #219150">4</span>
+                                <span class="result-line"></span>
+                                <span class="result-denominator" style="color: #3498DB">12</span>
+                            </div>
+                            <span class="fraction-comma">,</span>
+                            
+                            <div class="result-fraction">
+                                <span class="result-numerator" style="color: #FF7F3F">9</span>
+                                <span class="result-line"></span>
+                                <span class="result-denominator" style="color: #3498DB">12</span>
+                            </div>
+                        </div>
+                        ${currentScreen === 9 ? `
+                            <div style="display: flex; justify-content: space-around; margin-top: 40px; width: 100%;">
+                                <div class="fraction-group">
+                                    <div class="fraction-label">Unlike Fractions</div>
+                                </div>
+                                <div class="fraction-group">
+                                    <div class="fraction-label">Like Fractions</div>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>`;
+            } else {
+                // Regular Step 3 screens (1-7)
+                mainContent = `
+                    <div class="fraction-display">
+                        <div class="fraction fraction-6">
+                            <span class="fraction-numerator">2</span>
+                            <span class="fraction-line"></span>
+                            <span class="fraction-denominator">6</span>
+                        </div>
+                        <span class="fraction-comma">,</span>
+                        <div class="fraction fraction-4 ${currentScreen >= 2 ? 'fraction-highlighted' : ''}">
+                            <span class="fraction-numerator">3</span>
+                            <span class="fraction-line"></span>
+                            <span class="fraction-denominator">4</span>
+                        </div>
+                        
+                        <span class="arrow">→</span>
+                        
+                        <div class="result-fraction">
+                            <span class="result-numerator">4</span>
+                            <span class="result-line"></span>
+                            <span class="result-denominator">12</span>
+                        </div>
+                        
+                        ${step3Completed ? `
+                            <span class="fraction-comma">,</span>
+                            <div class="result-fraction">
+                                <span class="result-numerator">9</span>
+                                <span class="result-line"></span>
+                                <span class="result-denominator">12</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="instruction-text">
+                        Find the equivalent fraction of the <span class="highlighted-text">second fraction</span> using the LCM as the denominator.
+                    </div>
+
+                    <div class="equation-container">
+                        ${currentScreen >= 2 ? `
+                            <div class="equation-fraction">
+                                <span class="equation-numerator equation-orange">3</span>
+                                <span class="equation-line-bar"></span>
+                                <span class="equation-denominator equation-orange">4</span>
+                            </div>
+                            ${currentScreen >= 3 ? '<span class="equals-sign">=</span>' : ''}
+                        ` : ''}
+                        ${currentScreen >= 4 ? `
+                            <div class="equation-fraction">
+                                <span class="equation-numerator" style="color: #FFFFFF">(<span style="color: #FF7F3F">3</span><span style="color: #FFFFFF">×</span><span style="color: #FFFFFF">3</span>)</span>
+                                <span class="equation-line-bar"></span>
+                                ${currentScreen >= 5 ? `
+                                    <span class="equation-denominator" style="color: #FFFFFF">(<span style="color: #FF7F3F">4</span><span style="color: #FFFFFF">×</span><span style="color: #FFFFFF">3</span>)</span>
+                                ` : `
+                                    <span class="equation-denominator equation-orange">4</span>
+                                `}
+                            </div>
+                        ` : ''}
+                        ${currentScreen >= 6 ? '<span class="equals-sign">=</span>' : ''}
+                        ${currentScreen >= 7 ? `
+                            <div class="equation-fraction">
+                                <span class="equation-numerator" style="color: #FF7F3F">9</span>
+                                <span class="equation-line-bar"></span>
+                                <span class="equation-denominator" style="color: #3498DB">12</span>
+                            </div>
+                        ` : ''}
+                    </div>`;
+            }
+            
+            // Complete HTML structure
+            root.innerHTML = `
+                <div class="app-container">
+                    <div class="top-section">
+                        <div class="step-sidebar">
+                            <button class="step-button step-1" onclick="handleStepClick(1)">
+                                <span>${translations['standard-ui'].navigation.step_1}</span>
+                            </button>
+                            <button class="step-button step-2" onclick="handleStepClick(2)">
+                                <span>${translations['standard-ui'].navigation.step_2}</span>
+                            </button>
+                            <button class="step-button step-3" onclick="handleStepClick(3)">
+                                <span>${translations['standard-ui'].navigation.step_3}</span>
+                            </button>
+                        </div>
+
+                        <div class="main-content" onclick="handleScreenTap()">
+                            <div class="content-wrapper">
+                                ${mainContent}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bottom-bar">
+                        <div class="bottom-instruction-text">
+                            Tap each step to learn how to convert unlike fractions to like fractions.
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        // Initialize app when page loads
+        document.addEventListener('DOMContentLoaded', renderApp);
+    </script>
+</body>
+</html>
